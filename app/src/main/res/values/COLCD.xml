@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="RED">font color="red"></string>
+    <string name="GREEN">font color=\"#00FF00\"></string>
+    <string name="BLUE">font color=\"#0000ff\"></string>
+    <string name="CYAN">font color=\"#00ffff\"></string>
+    <string name="MAGENTA">font color=\"#ff00ff\"></string>
+    <string name="YELLOW">font color=\"#ffff00\"></string>
+    <string name="CC0">font color=\"#000000\"></string>
+    <string name="CC1">font color=\"#000000\"></string>
+    <string name="CC2">font color=\"#000000\"></string>
+    <string name="CC3">font color=\"#000000\"></string>
+    <string name="CC4">font color=\"#000000\"></string>
+    <string name="CC5">font color=\"#000000\"></string>
+    <string name="CC6">font color=\"#000000\"></string>
+    <string name="CC7">font color=\"#000000\"></string>
+    <string name="CC8">font color=\"#000000\"></string>
+    <string name="CC9">font color=\"#000000\"></string>
+    <string name="CC10">font color=\"#000000\"></string>
+    <string name="CC11">font color=\"#000000\"></string>
+    <string name="CC12">font color=\"#000000\"></string>
+    <string name="CC13">font color=\"#000000\"></string>
+    <string name="CC14">font color=\"#000000\"></string>
+    <string name="CC15">font color=\"#000000\"></string>
+    <string name="CC16">font color=\"#000000\"></string>
+    <string name="CC17">font color=\"#000000\"></string>
+    <string name="CC18">font color=\"#000000\"></string>
+    <string name="CC19">font color=\"#000000\"></string>
+    <string name="CC20">font color=\"#000000\"></string>
+    <string name="CC21">font color=\"#000000\"></string>
+    <string name="CC22">font color=\"#000000\"></string>
+    <string name="CC23">font color=\"#000000\"></string>
+    <string name="CC24">font color=\"#000000\"></string>
+    <string name="BLACK">font color=\"#000000\"></string>
+    <string name="end">/font></string>
+
+</resources>
