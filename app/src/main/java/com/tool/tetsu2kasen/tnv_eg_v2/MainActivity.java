@@ -67,6 +67,8 @@ public class MainActivity extends Activity {
     public List<Integer> nst= new ArrayList<>();
     public List<String> BTx= new ArrayList<>();
     public List<String> BLnk= new ArrayList<>();
+    public List<String> File= new ArrayList<>();
+    public List<String> Yoko= new ArrayList<>();
     public boolean slc_md=false;
     public String Loaded="";
     Fileread fr = new Fileread();
@@ -104,6 +106,19 @@ public class MainActivity extends Activity {
 
     }
 
+    public void texEngine(String nyo){
+
+            slc_md=true;
+            String buttmp[]=nyo.split("\uF0FE");
+            reqcolbtn=buttmp.length;
+
+            for(int i=0;i< buttmp.length;i++){
+                String LD[]=buttmp[i].split(",");
+                BLnk.add(LD[0]);
+                BTx.add(LD[1]);
+            }
+
+    }
 
     public void selEngine(String nyo){
         slc_md=true;
@@ -114,8 +129,8 @@ public class MainActivity extends Activity {
 
         for(int i=0;i< buttmp.length;i++){
             String LD[]=buttmp[i].split(",");
-            BLnk.add(LD[0]);
-            BTx.add(LD[1]);
+            File.add(LD[0]);
+            Yoko.add(LD[1]);
         }
         String[] items=new String[BTx.size()];
         for(int n=0;n<BTx.size();n++){
@@ -221,6 +236,7 @@ public class MainActivity extends Activity {
                 Log.d("nst", "loaded " + l + "," + nst.size());
 
             }
+
         }
     }
     public void loadscene(String title){
