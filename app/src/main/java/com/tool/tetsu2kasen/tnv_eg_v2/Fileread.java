@@ -17,9 +17,7 @@ public class Fileread {
     public List<String> text= new ArrayList<>();
     public void fileRead(Context context, String filePath) {
 
-
-
-
+        text.clear();
         AssetManager as = context.getResources().getAssets();
         InputStream st = null;
         try {
