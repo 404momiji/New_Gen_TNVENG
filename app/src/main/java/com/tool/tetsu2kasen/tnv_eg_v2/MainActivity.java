@@ -12,18 +12,18 @@ package com.tool.tetsu2kasen.tnv_eg_v2;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
-import android.content.res.AssetManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +35,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.io.*;
 
-import static com.tool.tetsu2kasen.tnv_eg_v2.R.id.button;
+import static android.R.color.transparent;
+import static android.graphics.BitmapFactory.*;
 
 
 public class MainActivity extends Activity {
@@ -49,6 +50,11 @@ public class MainActivity extends Activity {
     TextView s3;
     TextView s4;
     LinearLayout slc;
+    ImageView Chara1 ;
+    ImageView Chara2 ;
+    ImageView Chara3 ;
+    ImageView Chara4 ;
+
 
     public int i;
 
@@ -69,20 +75,46 @@ public class MainActivity extends Activity {
     public List<String> BLnk= new ArrayList<>();
     public List<String> File= new ArrayList<>();
     public List<String> Yoko= new ArrayList<>();
+    public String Readed = "";
+    public int width=0;
+
     public boolean slc_md=false;
     public String Loaded="";
     Fileread fr = new Fileread();
+    SaveManager sv =new SaveManager();
     String txt ="hogehoge";
     public int BM;
     int reqcolbtn=0;//選択肢用エンジンのボタン数
+
+    public void SaveOnClick(View v){
+        sv.fileWrite(this,NTC+"",Readed);
+    }
+    public void ReadOnClick(View v){
+        //
+        // mTimer.cancel();
+        String[] Savedat=sv.fileRead(this);
+        loadscene(Savedat[1]);
+        NTC = Integer.parseInt(Savedat[0]);
+        BM=fr.textsizegetter();
+    }
+
     public void Init_TNVENG(){
+
+        Readed="serif";
         loadscene("serif");
     }
     //0C,9e,0a,0.330A,0.332d,0.88asdfg
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sv.init(this);
+        //Windowマネージャをよびだしゅぅぅぅぅぅぅぅぅ
+        WindowManager wm = getWindowManager();
+        //Dispのインスタンスを取得すりゅううううう
+        Display disp = wm.getDefaultDisplay();
+        width = disp.getWidth();
 
+        LinearLayout linlay= new LinearLayout(this);
 
 
         mHandler = new Handler();
@@ -96,6 +128,10 @@ public class MainActivity extends Activity {
         rb = (TextView) findViewById(R.id.row2);
         rc = (TextView) findViewById(R.id.row3);
         snr = (TextView) findViewById(R.id.snr);
+        Chara1 = findViewById(R.id.imageView);
+        Chara2 = findViewById(R.id.imageView2);
+        Chara3 = findViewById(R.id.imageView3);
+        Chara4 = findViewById(R.id.imageView4);
 
         ra.setText("hoge");
         rb.setText("hogehoge");
@@ -105,17 +141,64 @@ public class MainActivity extends Activity {
         Init_TNVENG();
 
     }
+    public Bitmap HyjRead(Context context, String filePath) {
+        try(InputStream istream = getResources().getAssets().open("Chara/"+filePath+".png");){
+        //0C.png
+        //try(InputStream istream = getResources().getAssets().open(filePath+".png");){
+            Bitmap bitmap = decodeStream(istream);
+            return bitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+
+
+
+    }
     public void texEngine(String nyo){
-
-            slc_md=true;
+        Chara1.setImageResource(R.color.TM);
+        Chara2.setImageResource(R.color.TM);
+        Chara3.setImageResource(R.color.TM);
+        Chara4.setImageResource(R.color.TM);
             String buttmp[]=nyo.split("\uF0FE");
             reqcolbtn=buttmp.length;
 
             for(int i=0;i< buttmp.length;i++){
+                File.clear();
+                Yoko.clear();
                 String LD[]=buttmp[i].split(",");
-                BLnk.add(LD[0]);
-                BTx.add(LD[1]);
+                String str = LD[0];
+                int hutoumeido=0;
+                if( Character.isUpperCase(str.charAt(1) ) ) {
+                    System.out.println( "大文字です" );
+                    hutoumeido=255;
+                }
+                else {
+                    System.out.println( "小文字です" );
+                    hutoumeido=177;
+                }
+                if(i==0){
+
+                    Chara1.setImageBitmap(HyjRead(this,LD[0].toUpperCase()));
+                    Chara1.setAlpha(hutoumeido);
+                    Chara1.setTranslationX(width*Float.parseFloat(LD[1]));
+                }else if(i==1){
+                    Chara2.setImageBitmap(HyjRead(this,LD[0].toUpperCase()));
+                    //Chara2.setImageBitmap(HyjRead(this,""));
+                    Chara2.setAlpha(hutoumeido);
+                    Chara2.setTranslationX(width*Float.parseFloat(LD[1]));
+                }else if(i==2){
+                    Chara3.setImageBitmap(HyjRead(this,LD[0].toUpperCase()));
+                    //Chara3.setImageBitmap(HyjRead(this,""));
+                    Chara3.setAlpha(hutoumeido);
+                    Chara3.setTranslationX(width*Float.parseFloat(LD[1]));
+                }else if(i==3){
+                    Chara4.setImageBitmap(HyjRead(this,LD[0].toUpperCase()));
+                    //Chara4.setImageBitmap(HyjRead(this,""));
+                    Chara4.setAlpha(hutoumeido);
+                    Chara4.setTranslationX(width*Float.parseFloat(LD[1]));
+                }
             }
 
     }
@@ -128,13 +211,13 @@ public class MainActivity extends Activity {
         reqcolbtn=buttmp.length;
 
         for(int i=0;i< buttmp.length;i++){
-            String LD[]=buttmp[i].split(",");
-            File.add(LD[0]);
-            Yoko.add(LD[1]);
+        String LD[]=buttmp[i].split(",");
+        BLnk.add(LD[0]);
+        BTx.add(LD[1]);
         }
         String[] items=new String[BTx.size()];
         for(int n=0;n<BTx.size();n++){
-            items[n]= BTx.get(n);
+        items[n]= BTx.get(n);
         }
         // チェックボックスの状態よりダイアログのIDを取得する
 
@@ -175,18 +258,22 @@ public class MainActivity extends Activity {
     public void selector(int hogeru){
         if(hogeru==0) {
             Log.d("Pushed:", "0");
+            Readed=BLnk.get(0);
             loadscene(BLnk.get(0));
             Log.d("Loaded:", BLnk.get(0));
         }else if(hogeru==1){
-                Log.d("Pushed:","1");
-                loadscene(BLnk.get(1));
-                Log.d("Loaded:",BLnk.get(1));
+            Log.d("Pushed:","1");
+            Readed=BLnk.get(1);
+            loadscene(BLnk.get(1));
+            Log.d("Loaded:",BLnk.get(1));
         }else if(hogeru==2){
-                Log.d("Pushed:","2");
-                loadscene(BLnk.get(2));
-                Log.d("Loaded:",BLnk.get(2));
+            Log.d("Pushed:","2");
+            Readed=BLnk.get(2);
+            loadscene(BLnk.get(2));
+            Log.d("Loaded:",BLnk.get(2));
         }else if(hogeru==3) {
             Log.d("Pushed:", "3");
+            Readed=BLnk.get(3);
             loadscene(BLnk.get(3));
             Log.d("Loaded:", BLnk.get(3));
         }
@@ -198,10 +285,12 @@ public class MainActivity extends Activity {
         if(loaded.charAt(0)=='\uF0FA')
         {
             snr.setText("背景:"+loaded.substring(1));
+            NTC++;
         }
         else if(loaded.charAt(0)=='\uF0EA')
         {
             snr.setText("アニメーション:"+loaded.substring(1));
+            NTC++;
         }
         else if (loaded.charAt(0)=='\uF0EF')
         {
@@ -214,10 +303,14 @@ public class MainActivity extends Activity {
         {
             snr.setText("シーン切り替え:"+loaded.substring(1));
             loadscene(loaded.substring(1));
+            NTC++;
         }
         else if (loaded.charAt(0)=='\uF0FB')
         {
-
+            NTC++;
+        }
+        else if(loaded.charAt(0)=='\uF0FC'){
+            loadtxt(loaded.substring(1));
         }
     }
     public void load_head() {
@@ -247,34 +340,10 @@ public class MainActivity extends Activity {
         Log.d("asdf","loaded ");
         load_head();
     }
-
-
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(!slc_md) {
-                    if (NTC >= nst.size() - 1) {
-                        NTC = 0;
-                    }
-                        if (NTC == 0 && nst.get(0) >= 1) {
-                            int gyoumax = nst.get(0);
-                            for (int ss = 0; ss < gyoumax; ss++) {
-                            scriptloader(fr.textgetter(ss));
-                            }
-                    } else {
-                    }
-                    if (NTC > 0) {
-                        int retumax = nst.get(NTC);
-                        for (int sn = nst.get(NTC - 1) + 1; sn < retumax; sn++) {
-                            scriptloader(fr.textgetter(sn));
-                        }
-
-                    }
-                    loadtxt(nst.get(NTC));
-                    NTC++;
-                }else{
-                    selEngine(Loaded.substring(1));
-                }
+                scriptloader(fr.textgetter(NTC));
                 Log.d("TouchEvent", "getAction()" + "ACTION_DOWN");
                 break;
             case MotionEvent.ACTION_UP:
@@ -299,13 +368,14 @@ public class MainActivity extends Activity {
         TMPKKK = "";
     }
     String textenc="A";
-    public void loadtxt(int nt) {
+    public void loadtxt(String naiyo) {
         String head_text;
         Log.d("LOAD:", "NAIYO:" + NTC);
-        textenc = fr.textgetter(nt);
-        head_text=textenc.substring(0,1);
-        textenc = textenc.substring(1);
-        if(head_text.charAt(0)=='\uF0FC'){
+        String temp=naiyo;
+        String buttmp[]=temp.split("\uF0FF");
+        textenc = buttmp[1];
+        texEngine(buttmp[0]);
+            textenc = temp;
             initV();
             String result = "";
             if (TLDE) {
@@ -390,25 +460,14 @@ public class MainActivity extends Activity {
                     rc.setText(Html.fromHtml(TMPTXT[2]));
                     i++;
                 }
-
                 TLDE=false;
-
-
-
-
+                NTC++;
             } else {
                 initV();
                 hyoujimoji(250);
-
-
-            }}else{
-            scriptloader(fr.textgetter(nt));
-            Log.d("Other:", "ERROR");
-
-
+            }
         }
 
-        }
 
         public void hyoujimoji(int sokudo){
 
@@ -536,10 +595,9 @@ public class MainActivity extends Activity {
                         }else{
                             TLDE=false;
                             Log.d("LOADEDTEXT:", "lows counted"  );
+                            NTC++;
                             cancel();
                             saiseityu=false;
-
-
                         }
                     }
                 });
